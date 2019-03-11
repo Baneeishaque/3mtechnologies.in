@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="Built-in web server">
+  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="DO" overwriteAll="false" deleteMissingItems="true" createEmptyFolders="true" autoUploadExternalChanges="true">
     <serverData>
       <paths name="Built-in web server">
         <serverdata>
@@ -9,6 +9,17 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="DO">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/3mtechnologies.in" local="$PROJECT_DIR$" web="/3mtechnologies.in" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/.idea" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
     </serverData>
+    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
   </component>
 </project>
