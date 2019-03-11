@@ -1,148 +1,149 @@
-(function($) {
-	/*
-		jquery.dropSlideMenu.js v1.0
-		Last updated: 24 July 2009
+(function ($) {
+    /*
+        jquery.dropSlideMenu.js v1.0
+        Last updated: 24 July 2009
 
-		Created by Damien du Toit
-		http://coda.co.za/blog/2009/07/24/dropslidemenu
+        Created by Damien du Toit
+        http://coda.co.za/blog/2009/07/24/dropslidemenu
 
-		Licensed under a Creative Commons Attribution-Non-Commercial 3.0 Unported License
-		http://creativecommons.org/licenses/by-nc/3.0/
-	*/
+        Licensed under a Creative Commons Attribution-Non-Commercial 3.0 Unported License
+        http://creativecommons.org/licenses/by-nc/3.0/
+    */
 
-	$.fn.dropSlideMenu = function(options) {
+    $.fn.dropSlideMenu = function (options) {
 
-		$.fn.dropSlideMenu.defaults = {
-			indicators: true, // adds a div to the list items for attaching indicators (arrows)
-			clickstream: true, // highlights the clickstream in a menu by comparing the links to the current URL path
-			openEasing: "easeOutQuad", // open animation effect
-			closeEasing: "easeInQuad", // close animation effect
-			duration: 600, // speed of drop down animation (in milliseconds)
-			delay: 800, // delay before the drop down closes (in milliseconds)
-			hideSelects: true // hide all select elements on the page when the menu is active (IE6 only)
-		};
+        $.fn.dropSlideMenu.defaults = {
+            indicators: true, // adds a div to the list items for attaching indicators (arrows)
+            clickstream: true, // highlights the clickstream in a menu by comparing the links to the current URL path
+            openEasing: "easeOutQuad", // open animation effect
+            closeEasing: "easeInQuad", // close animation effect
+            duration: 600, // speed of drop down animation (in milliseconds)
+            delay: 800, // delay before the drop down closes (in milliseconds)
+            hideSelects: true // hide all select elements on the page when the menu is active (IE6 only)
+        };
 
-		var o = $.extend({}, $.fn.dropSlideMenu.defaults, options);
+        var o = $.extend({}, $.fn.dropSlideMenu.defaults, options);
 
-		return this.each(function() {
-			window.container = $(this).children("ul:first");
-			window.lists = container.find("ul");
-			window.listItems = lists.parent();
-			window.timer = null;
-			window.count = 1;
+        return this.each(function () {
+            window.container = $(this).children("ul:first");
+            window.lists = container.find("ul");
+            window.listItems = lists.parent();
+            window.timer = null;
+            window.count = 1;
 
-			// add class to container
-			container.addClass("ds");
-			
-			// inject float clearer
-			var clear = "<div class=\"dsClear\">&nbsp;</div>";
-			container.append(clear);
+            // add class to container
+            container.addClass("ds");
 
-			lists.each(function() {
-				// assign unique id, hide list
-				$(this).attr("id", "dsList-" + count).css({ display: "none", visibility: "visible" });
+            // inject float clearer
+            var clear = "<div class=\"dsClear\">&nbsp;</div>";
+            container.append(clear);
 
-				count++;
-			});
+            lists.each(function () {
+                // assign unique id, hide list
+                $(this).attr("id", "dsList-" + count).css({display: "none", visibility: "visible"});
 
-			count = 1;
+                count++;
+            });
 
-			listItems.each(function() {
-				var listItem = $(this);
-				var list = listItem.children("ul:first");
-				var link = listItem.children("a:first");
+            count = 1;
 
-				// add clickstream if link href found in URL path
-				if (o.clickstream) {
-					var links = listItem.find("a");
-	
-					links.each(function() {
-						if (window.location.pathname.indexOf($(this).attr("href")) != -1) {
-							$(this).parent().addClass("clickstream");
-						}
-					});
-				}
+            listItems.each(function () {
+                var listItem = $(this);
+                var list = listItem.children("ul:first");
+                var link = listItem.children("a:first");
 
-				// wrap indicator markup
-				if (o.indicators) {
-					link.wrap("<div class=\"indicator\"></div>");
-				}
+                // add clickstream if link href found in URL path
+                if (o.clickstream) {
+                    var links = listItem.find("a");
 
-				// assign unique id
-				listItem.attr("id", "dsListItem-" + count);
-				
-				$.event.special.hover.delay = 80;
+                    links.each(function () {
+                        if (window.location.pathname.indexOf($(this).attr("href")) != -1) {
+                            $(this).parent().addClass("clickstream");
+                        }
+                    });
+                }
 
-				listItem.hover(function() {
-					if ($(this).hasClass("open")) {
-						if (timer) {
-							// reset timer
-							window.clearTimeout(timer);
-							timer = null;
-						}
-					}
-					else {
-						// hide all menus
-						lists.hide();
+                // wrap indicator markup
+                if (o.indicators) {
+                    link.wrap("<div class=\"indicator\"></div>");
+                }
 
-						// reset all list item styles
-						listItems.removeClass("open").removeClass("active");
+                // assign unique id
+                listItem.attr("id", "dsListItem-" + count);
 
-						// reset timer
-						window.clearTimeout(timer);
-						timer = null;
+                $.event.special.hover.delay = 80;
 
-						// open menu
-						openList($(this));
-					}
-				}, 
-				function() { 
-					timer = setTimeout(function() {
-						// close menu
-						closeList(list.parent());
-					}, o.delay);
-		        });
+                listItem.hover(function () {
+                        if ($(this).hasClass("open")) {
+                            if (timer) {
+                                // reset timer
+                                window.clearTimeout(timer);
+                                timer = null;
+                            }
+                        } else {
+                            // hide all menus
+                            lists.hide();
 
-				function openList(li) {
-					// hide select elements in IE6
-					if (o.hideSelects && $.browser.msie && parseInt($.browser.version) < 7) {
-						$("select").css("visibility", "hidden");
-					}
+                            // reset all list item styles
+                            listItems.removeClass("open").removeClass("active");
 
-					// add style
-					li.addClass("open");
+                            // reset timer
+                            window.clearTimeout(timer);
+                            timer = null;
 
-					// open menu
-					list.show("slide", {duration: o.duration, direction: "up", easing: o.openEasing}, function() {
-					});
-				}
+                            // open menu
+                            openList($(this));
+                        }
+                    },
+                    function () {
+                        timer = setTimeout(function () {
+                            // close menu
+                            closeList(list.parent());
+                        }, o.delay);
+                    });
 
-				function closeList(li) {
-					// reset timer
-					timer = null;
+                function openList(li) {
+                    // hide select elements in IE6
+                    if (o.hideSelects && $.browser.msie && parseInt($.browser.version) < 7) {
+                        $("select").css("visibility", "hidden");
+                    }
 
-					// close menu
-					list.hide("slide", {duration: o.duration, direction: "up", easing: o.closeEasing}, function() {
-						// remove style
-						li.removeClass("open");
+                    // add style
+                    li.addClass("open");
 
-						// show select elements in IE6
-						if (o.hideSelects && $.browser.msie && parseInt($.browser.version) < 7) {
-							$("select").css("visibility", "visible");
-						}
-					});	
-				}
+                    // open menu
+                    list.show("slide", {duration: o.duration, direction: "up", easing: o.openEasing}, function () {
+                    });
+                }
 
-				count++;
-			});
+                function closeList(li) {
+                    // reset timer
+                    timer = null;
 
-			// Internet Explorer fix
-			if ($.browser.msie) {
-				container.find("li ul li a").css({ zoom: 1, verticalAlign: "top" });
-			}
+                    // close menu
+                    list.hide("slide", {duration: o.duration, direction: "up", easing: o.closeEasing}, function () {
+                        // remove style
+                        li.removeClass("open");
 
-			// behaviour for links with empty href's
-			$("a[href$='#']", container).css({cursor: "default"}).click(function() { return false; });
-		});
-	};
+                        // show select elements in IE6
+                        if (o.hideSelects && $.browser.msie && parseInt($.browser.version) < 7) {
+                            $("select").css("visibility", "visible");
+                        }
+                    });
+                }
+
+                count++;
+            });
+
+            // Internet Explorer fix
+            if ($.browser.msie) {
+                container.find("li ul li a").css({zoom: 1, verticalAlign: "top"});
+            }
+
+            // behaviour for links with empty href's
+            $("a[href$='#']", container).css({cursor: "default"}).click(function () {
+                return false;
+            });
+        });
+    };
 })(jQuery);
